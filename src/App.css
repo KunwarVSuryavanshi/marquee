@@ -1,0 +1,17 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.outlet {
+  font-size: 2rem;
+}
+
+.navigate {
+  color: rgba(0, 204, 255, 0.678);
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
