@@ -8,7 +8,7 @@ const Login = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const credentials = useContext<Array<ICredential>>(CredentialsContext);
-  const { isAuthenticated, setAuthInfo } = useContext(AuthContext);
+  const { setAuthInfo } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -18,7 +18,6 @@ const Login = () => {
       return;
     }
     if (credentials.find((cred) => cred.userName === username && cred.password === password)) {
-      console.log('credentials: ', credentials, isAuthenticated, setAuthInfo)
       setAuthInfo(true);
       navigate('/dashboard');
     }
@@ -33,7 +32,6 @@ const Login = () => {
         setPassword(event.target.value);
         break;
       default:
-        console.log('default: ', event.target.value);
         break;
     }
   };

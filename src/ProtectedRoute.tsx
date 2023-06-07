@@ -6,13 +6,11 @@ type Props = {
 }
 const ProtectedRoute = ({ children }: Props) => {
   const authContext = useContext(AuthContext);
-  console.log('authContext: ', authContext)
   if (authContext?.isAuthenticated) {
     return (
       <div>{children}</div>
     )
   }
-  console.log('authContext2: ', authContext)
   return <Navigate to='/login' replace />
 }
 

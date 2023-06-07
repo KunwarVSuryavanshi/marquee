@@ -1,14 +1,13 @@
 import { Outlet } from 'react-router-dom';
 import './App.css'
-import { AuthProvider } from './context/AuthContext'
+import { AuthContext } from './context/AuthContext'
+import { useContext } from 'react';
 
-function App() {
-  // const authContext = useContext(AuthContext);
-
+const App = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+  console.log('isAuthenticated: ', isAuthenticated);
   return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
+    <Outlet />
   )
 }
 
