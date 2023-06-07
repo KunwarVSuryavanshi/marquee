@@ -1,0 +1,84 @@
+.dashboard_root {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: center; */
+  height: 100vh;
+  width: 100vw;
+
+  .header {
+    width: 100vw;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .field-btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 2rem 0rem;
+
+    .btn {
+      margin-left: 1rem;
+      height: 8vh;
+    }
+  }
+
+  .todo-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 1rem;
+  }
+
+  .task-list {
+    color: whitesmoke;
+    /* width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start; */
+  }
+}
+
+.list {
+  /* width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start; */
+  color: whitesmoke;
+}
+
+.list-item {
+  color: whitesmoke;
+}
+
+.logout {
+  font-size: 1.25rem;
+
+  .lg {
+    cursor: pointer;
+  }
+}
+
+#dashboard {
+  .MuiFormLabel-root {
+    color: whitesmoke;
+  }
+
+  .MuiInputBase-input.MuiOutlinedInput-input {
+    color: whitesmoke;
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: whitesmoke;
+  }
+
+  .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: whitesmoke;
+  }
+}

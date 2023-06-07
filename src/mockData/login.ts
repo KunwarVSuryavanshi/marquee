@@ -2,10 +2,12 @@
 export default [
   {
     userName: "V",
-    password: "B"
+    password: "B",
+    token: "123"
   },
   {
     userName: "Astha",
-    password: "password"
+    password: "password",
+    token: "456"
   }
 ]
