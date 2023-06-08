@@ -5,6 +5,9 @@ import './Dashboard.css';
 import { TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import AddTaskIcon from '@mui/icons-material/AddTask';
+import LowPriorityIcon from '@mui/icons-material/LowPriority';
+import { sanatizeInput } from '../../utils';
 
 const Dashboard: React.FC = () => {
   const [newTodo, setNewTodo] = useState('');
@@ -14,6 +17,13 @@ const Dashboard: React.FC = () => {
   const [prevId, setPrevId] = useState<number | undefined>(undefined);
   const navigate = useNavigate();
   const { setAuthInfo } = useContext(AuthContext);
+
+  const handleInput = (value: string, region: string) => {
+    if (region === 'sub')
+      setSubTask(sanatizeInput(value));
+    else
+      setNewTodo(sanatizeInput(value));
+  };
 
   const handleAddTodo = () => {
     if (newTodo.trim() !== '') {
@@ -31,40 +41,53 @@ const Dashboard: React.FC = () => {
     }
     if (prevId === id && subTask.trim() !== '') {
       addTodo(subTask, id);
+      setParentID(undefined);
+      setPrevId(undefined);
       setSubTask('');
     }
   };
 
-  const renderTodos = (todos: Todo[]): JSX.Element[] => {
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
+    if (subTask.trim() === '') {
+      e.preventDefault();
+      setParentID(undefined);
+      setPrevId(undefined);
+    }
+  };
+
+  const renderTodos = (todos: Todo[], mr = 0): JSX.Element[] => {
     return todos.map((todo) => (
-      <div key={todo.id} className='task-list'>
+      <div key={todo.id} className='task-list' style={{ marginLeft: `${mr * 2}rem` }}>
         {
           todo.text &&
           <div className='list'>
-            <div className="list-item">
-              <span>{todo.text}</span>
-              <button className='btn' onClick={() => handleAddSubtask(todo.id)}>Add Subtask</button>
-            </div>
+            <span title="Adds Subtask to current task" style={{ display: 'inherit' }}><LowPriorityIcon className='btn subtask' onClick={() => handleAddSubtask(todo.id)} /></span>
+            <div className='list-text'>{todo.text}</div>
           </div>
         }
         {parentID === todo.id && (
-          <TextField
-            id="outlined-basic"
-            label="Subtask"
-            variant="outlined"
-            type="text"
-            placeholder="Enter your subtask here"
-            value={subTask}
-            onChange={(e) => setSubTask(e.target.value)}
-          />
+          <div className="subtask-field">
+            <TextField
+              id="outlined-basic"
+              label="Subtask"
+              variant="outlined"
+              className='subtask-input'
+              type="text"
+              placeholder="Enter your subtask here"
+              value={subTask}
+              onChange={(e) => handleInput(e.target.value, 'sub')}
+              onBlur={handleBlur}
+            />
+            {subTask?.trim()?.length ? <AddTaskIcon className="addIcon" onClick={() => handleAddSubtask(todo.id)} /> : null}
+          </div>
         )}
-        {todo.subTasks && renderTodos(todo.subTasks)}
-      </div>
+        {todo.subTasks && <div className={`sub-lists sl-${mr}`}  > {renderTodos(todo.subTasks, mr + 1)}</div>}
+      </div >
     ));
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('authDetails');
+    sessionStorage.removeItem('authDetails');
     navigate('/login')
     setAuthInfo(false)
   };
@@ -74,22 +97,23 @@ const Dashboard: React.FC = () => {
       <div className="header">
         <h1>Welcome to your Dashboard</h1>
       </div>
+      <div className='logout'>Done with the list? <u className="lg" onClick={handleLogout}>Logout</u></div>
       <div className='field-btn'>
         <TextField
           id="outlined-basic"
           label="Task"
           variant="outlined"
+          className='todo-input'
           type="text"
           placeholder="Enter your task here"
           value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
+          onChange={(e) => handleInput(e.target.value, 'todo')}
         />
         <button className="btn" onClick={handleAddTodo}>Add Todo</button>
       </div>
       <div className='todo-list'>
         {renderTodos(todos)}
       </div>
-      <div className='logout'>Done with list? <u className="lg" onClick={handleLogout}>Logout</u></div>
     </div>
   );
 };

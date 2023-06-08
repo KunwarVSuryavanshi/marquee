@@ -1,8 +1,8 @@
 // Mock data for login
 export default [
   {
-    userName: "V",
-    password: "B",
+    userName: "Viraj",
+    password: "Bazinga",
     token: "123"
   },
   {

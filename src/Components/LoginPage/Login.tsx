@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { CredentialsContext } from "../../context/CredentialsContext";
 import { ICredential } from "../../interface/interface";
 import { useNavigate } from "react-router-dom";
@@ -8,12 +8,13 @@ import './Login.css';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { sanatizeInput } from "../../utils";
 
 const Login = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const credentials = useContext<Array<ICredential>>(CredentialsContext);
-  const { setAuthInfo } = useContext(AuthContext);
+  const { isAuthenticated, setAuthInfo } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<string>('');
 
@@ -36,12 +37,11 @@ const Login = () => {
     }
     const mockApiResponse = credentials.filter((cred) => cred.userName === username && cred.password === password);
     if (mockApiResponse.length > 0) {
-      console.log(mockApiResponse)
       setMessage('Login Successful')
       setOpen(true)
       setAuthInfo(true);
       navigate('/dashboard');
-      localStorage.setItem('authDetails', JSON.stringify({ userName: mockApiResponse?.[0].userName, password: mockApiResponse?.[0]?.password, token: mockApiResponse?.[0]?.token }));
+      sessionStorage.setItem('authDetails', JSON.stringify({ userName: mockApiResponse?.[0].userName, password: mockApiResponse?.[0]?.password, token: mockApiResponse?.[0]?.token }));
     } else {
       setMessage('Username and password did not match')
       setOpen(true);
@@ -51,7 +51,7 @@ const Login = () => {
   const handleChange = (req: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     switch (req) {
       case 'username':
-        setUsername(event.target.value);
+        setUsername(sanatizeInput(event.target.value));
         break;
       case 'password':
         setPassword(event.target.value);
@@ -73,6 +73,13 @@ const Login = () => {
       </IconButton>
     </>
   );
+
+  useEffect(() => {
+    if (sessionStorage.getItem('authDetails') || isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate])
+
   return (
     <div className="wrapper_log">
       <div id="login" className="login_root">
@@ -85,6 +92,7 @@ const Login = () => {
               variant="outlined"
               type="text"
               placeholder="Username"
+              value={username}
               onChange={(e) => handleChange('username', e)}
             />
           </div>
@@ -95,6 +103,7 @@ const Login = () => {
               variant="outlined"
               type="password"
               placeholder="Password"
+              value={password}
               onChange={(e) => handleChange('password', e)}
             />
           </div>

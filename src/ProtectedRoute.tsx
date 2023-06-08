@@ -6,7 +6,7 @@ type Props = {
 }
 const ProtectedRoute = ({ children }: Props) => {
   const authContext = useContext(AuthContext);
-  if (authContext?.isAuthenticated || localStorage.getItem('authDetails')) {
+  if (authContext?.isAuthenticated || sessionStorage.getItem('authDetails')) {
     return (
       <div>{children}</div>
     )

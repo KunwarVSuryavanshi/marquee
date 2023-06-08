@@ -1,13 +1,17 @@
-import { Outlet } from 'react-router-dom';
-import './App.css'
-import { AuthContext } from './context/AuthContext'
-import { useContext } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import './App.css';
 
 const App = () => {
-  const { isAuthenticated } = useContext(AuthContext);
-  console.log('isAuthenticated: ', isAuthenticated);
+  const location = useLocation();
+  const navigate = useNavigate();
   return (
-    <Outlet />
+    location.pathname === '/' ?
+      <div className="App">
+        <h1>Welcome to TODO app.</h1>
+        <div className='navigate nv' onClick={() => navigate('/dashboard')}>Click here to check your dashboard</div>
+      </div>
+      :
+      <Outlet />
   )
 }
 
