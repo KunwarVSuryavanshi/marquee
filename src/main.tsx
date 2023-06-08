@@ -10,7 +10,9 @@ import ProtectedRoute from './ProtectedRoute.tsx';
 import Login from './Components/LoginPage/Login.tsx';
 import { AuthProvider } from './context/AuthContext.tsx';
 import { TodoProvider } from './context/TodoContext.tsx';
+import { inject } from '@vercel/analytics';
 
+inject();
 const router = createBrowserRouter([
   {
     path: "/",
