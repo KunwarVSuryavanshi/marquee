@@ -60,6 +60,10 @@
     /* text-align: center; */
   }
 
+  .doneIcon {
+    color: white;
+  }
+
 }
 
 .list-item {
@@ -83,6 +87,7 @@
 
 .addIcon {
   margin-left: 2rem;
+  cursor: pointer;
 }
 
 .logout {
@@ -92,6 +97,10 @@
     cursor: pointer;
     color: rgb(16, 232, 239);
   }
+}
+
+.drop_icon {
+  cursor: pointer;
 }
 
 #dashboard {
